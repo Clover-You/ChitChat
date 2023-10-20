@@ -1,4 +1,4 @@
-package top.ctong.chitchatserver;
+package top.ctong.chitchat;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
