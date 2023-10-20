@@ -1,5 +1,6 @@
 package top.ctong.chitchat.common.domain.vo.request.auth;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.io.Serial;
@@ -29,8 +30,10 @@ public class PasswordAuthLoginReq implements Serializable {
     @Serial
     private static final long serialVersionUID = 7716678547495664955L;
 
+    @NotEmpty
     private String account;
 
+    @NotEmpty
     private String password;
 
 }
