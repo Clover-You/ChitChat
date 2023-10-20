@@ -1,9 +1,12 @@
-package top.ctong.chitchat.common.domain.vo.request.auth;
+package top.ctong.chitchat.common.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -17,20 +20,37 @@ import java.io.Serializable;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * 用户名密码登录
+ * 用户表
  * </p>
  *
  * @author Clover
- * @date 2023-10-20 10:56
+ * @date 2023-10-20 13:47
  */
 @Data
-public class PasswordAuthLoginReq implements Serializable {
+@TableName("sys_user")
+public class User implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 7716678547495664955L;
 
-    private String account;
+    /**
+     * 用户 ID
+     */
+    @TableId
+    private Long id;
 
-    private String password;
+    /**
+     * 用户名
+     */
+    private String name;
 
+    /**
+     * 头像
+     */
+    private String avatar;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
 }

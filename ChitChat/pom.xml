@@ -23,6 +23,7 @@
 
     <properties>
         <java.version>21</java.version>
+        <mybatisplus.version>3.5.3.2</mybatisplus.version>
     </properties>
 
     <dependencyManagement>
@@ -30,14 +31,22 @@
             <dependency>
                 <groupId>top.ctong.chitchat.common</groupId>
                 <artifactId>chit-chat-domain</artifactId>
-                <version>${version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>top.ctong</groupId>
                 <artifactId>chit-chat-core</artifactId>
-                <version>${version}</version>
+                <version>${project.version}</version>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatisplus.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>
