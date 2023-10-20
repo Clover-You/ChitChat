@@ -1,6 +1,8 @@
 package top.ctong.chitchatcore.utils;
 
 import lombok.Setter;
+import top.ctong.chitchatcore.expection.ErrorEnum;
+import top.ctong.chitchatcore.expection.HttpError;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -42,6 +44,11 @@ public class Result<T> implements Serializable {
     }
 
     public static <T> Result<T> ok() {
-        return new Result<>(ErrorCode.SUCCESS.getCode(), ErrorCode.SUCCESS.getMessage(), null);
+        return new Result<>(HttpError.SUCCESS.getErrorCode(), HttpError.SUCCESS.getErrorMessage(), null);
     }
+
+    public static <T> Result<T> ok(ErrorEnum error, T data){
+        return new Result<>(error.getErrorCode(), error.getErrorMessage(), data);
+    }
+
 }

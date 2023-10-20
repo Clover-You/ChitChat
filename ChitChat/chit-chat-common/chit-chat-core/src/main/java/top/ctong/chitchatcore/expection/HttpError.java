@@ -1,7 +1,6 @@
-package top.ctong.chitchatcore.utils;
+package top.ctong.chitchatcore.expection;
 
-import java.io.Serial;
-import java.io.Serializable;
+import top.ctong.chitchatcore.expection.ErrorEnum;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -21,7 +20,7 @@ import java.io.Serializable;
  * @author Clover
  * @date 2023-10-20 11:09
  */
-public enum ErrorCode {
+public enum HttpError implements ErrorEnum {
     SUCCESS("200", "successful")
     ;
 
@@ -29,17 +28,18 @@ public enum ErrorCode {
 
     private String message;
 
-    ErrorCode(String code, String message) {
+    HttpError(String code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public String getCode() {
-        return code;
+    @Override
+    public String getErrorCode() {
+        return this.code;
     }
 
-    public String getMessage() {
-        return message;
+    @Override
+    public String getErrorMessage() {
+        return this.message;
     }
-
 }

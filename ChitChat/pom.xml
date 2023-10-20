@@ -25,4 +25,19 @@
         <java.version>21</java.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>top.ctong.chitchat.common</groupId>
+                <artifactId>chit-chat-domain</artifactId>
+                <version>${version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>top.ctong</groupId>
+                <artifactId>chit-chat-core</artifactId>
+                <version>${version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
