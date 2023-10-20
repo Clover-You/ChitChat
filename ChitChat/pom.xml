@@ -17,6 +17,7 @@
 
     <modules>
         <module>chit-chat-server</module>
+        <module>chit-chat-common</module>
     </modules>
     <packaging>pom</packaging>
 
