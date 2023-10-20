@@ -24,9 +24,9 @@ public enum HttpError implements ErrorEnum {
     SUCCESS("200", "successful")
     ;
 
-    private String code;
+    private final String code;
 
-    private String message;
+    private final String message;
 
     HttpError(String code, String message) {
         this.code = code;
