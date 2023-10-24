@@ -8,6 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      title: {
+        height: {
+          '@apply': 'max-h-screen',
+          default: '60px',
+        },
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
