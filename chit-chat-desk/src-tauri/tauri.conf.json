@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "top.ctong.chat.chit",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -58,7 +58,8 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "墨迹",
+        "title": "",
+        "titleBarStyle": "Overlay",
         "width": 800
       }
     ]
