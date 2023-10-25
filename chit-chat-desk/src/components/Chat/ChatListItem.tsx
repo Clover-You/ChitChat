@@ -60,7 +60,7 @@ export const ChatListItem = React.memo(function ChatListItem(
           width={44}
           height={44}
           src={avatarUrl}
-          alt={''}
+          alt={props.title ?? ''}
         />
       </div>
 

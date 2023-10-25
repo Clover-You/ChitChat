@@ -12,10 +12,12 @@ import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels'
 
 import { ChatPanel } from '#/components/ChatPanel'
 import { ChatWindow } from '#/components/Chat/ChatWindow'
+import { useState } from 'react'
 
 export default function ChatPage() {
+  const [message, setMessage] = useState()
   return (
-    <div className={'h-full w-full container'}>
+    <div className={'h-full w-full'}>
       <PanelGroup
         className="w-full"
         autoSaveId="example"
