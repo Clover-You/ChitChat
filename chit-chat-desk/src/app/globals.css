@@ -12,6 +12,10 @@
   user-select: none;
 }
 
+p {
+  user-select: auto;
+  cursor: text;
+}
 div {
   cursor: default;
 }

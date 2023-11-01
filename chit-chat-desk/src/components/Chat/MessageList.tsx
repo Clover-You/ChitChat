@@ -8,7 +8,7 @@
  * @author: Clover
  * @create: 2023-10-23 14:30
  */
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { ChatListItem } from '../Chat/ChatListItem'
 
 const list = [

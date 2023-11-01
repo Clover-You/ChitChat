@@ -10,17 +10,11 @@
 
 import React from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
+import { MessageList } from '../MessageList'
 
 export const ChatWindow = React.memo(function ChatWindow() {
-  const contentList = []
-
-  for (let i = 1; i <= 100; i++) {
-    const content = <p>content {i}</p>
-    contentList.push(content)
-  }
-
   return (
-    <div className="w-full h-full bg-zinc-950/50 flex flex-col container backgroundImage">
+    <div className="w-full h-full bg-gray-200/50 flex flex-col container backgroundImage">
       <div
         className="border-b w-full title-height flex items-center px-5"
         style={{
@@ -31,13 +25,13 @@ export const ChatWindow = React.memo(function ChatWindow() {
 
       <PanelGroup direction="vertical">
         <Panel>
-          <div className="h-full overflow-auto">{contentList}</div>
+          <div className="h-full overflow-auto">
+            <MessageList />
+          </div>
         </Panel>
 
         <PanelResizeHandle>
-          <div className="w-full h-[4px] relative top-[2px] cursor-row-resize">
-            {' '}
-          </div>
+          <div className="w-full h-[4px] relative top-[2px] cursor-row-resize"></div>
         </PanelResizeHandle>
 
         <Panel

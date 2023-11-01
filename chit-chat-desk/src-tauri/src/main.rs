@@ -3,10 +3,10 @@
 
 use futures::SinkExt;
 use futures::StreamExt;
-use futures_util::stream::SplitStream;
+use futures_util::future;
+use futures_util::stream::SplitSink;
 use std::sync::Arc;
 use tauri::window;
-use tauri::Manager;
 use tokio::io::AsyncReadExt;
 use tokio::net::TcpStream;
 use tokio::sync::Mutex;
@@ -17,14 +17,13 @@ use url::Url;
 
 const SOCKET_SERVER_ADDR: &str = "ws://127.0.0.1:1024/socket";
 
-type Socket = WebSocketStream<MaybeTlsStream<TcpStream>>;
+type Socket = SplitSink<WebSocketStream<MaybeTlsStream<TcpStream>>, Message>;
 struct SocketStoreage {
   stream: Arc<Mutex<Option<Socket>>>,
 }
 
 #[tokio::main]
 async fn main() {
-  println!("app before running...");
   tauri::Builder::default()
     .manage(SocketStoreage {
       stream: Arc::new(Mutex::new(None)),
@@ -43,7 +42,8 @@ async fn main() {
 async fn check_socket<'r>(socket: tauri::State<'r, SocketStoreage>) -> Result<bool, ()> {
   if socket.stream.lock().await.is_some() {
     return Ok(true);
-  };
+  }
+
   Ok(false)
 }
 
@@ -55,39 +55,34 @@ async fn connect_socket<'r>(
 ) -> Result<(), ()> {
   let url = Url::parse(&SOCKET_SERVER_ADDR).expect("parse failed");
   let (ws_stream, _) = tokio_tungstenite::connect_async(url).await.unwrap();
+  let (ws_write, rx) = ws_stream.split();
 
-  *socket.stream.lock().await = Some(ws_stream);
-  tokio::spawn(handle_messages(socket.stream.clone()));
+  tokio::spawn(async move {
+    rx.for_each(|msg| async {
+      match msg.unwrap() {
+        Message::Text(text) => {
+          println!("server message ----->>> {}", text);
+          let _ = window.emit("sys_message", text);
+          // window.lock().await.emit("event", "a");
+        }
+        _ => {}
+      }
+    })
+    .await;
+  });
+
+  *socket.stream.lock().await = Some(ws_write);
 
   Ok(())
-}
-
-/// 监听服务端消息
-async fn handle_messages(socket: Arc<Mutex<Option<Socket>>>) {
-  let mut ws_stream = socket.lock().await;
-  let (_, mut read) = ws_stream.as_mut().unwrap().split();
-
-  while let Some(Ok(msg)) = read.next().await {
-    // 处理接收到的消息，这里只是简单地打印
-    match msg {
-      Message::Text(text) => println!("Received text message: {}", text),
-      Message::Binary(bin) => println!("Received binary message with {} bytes", bin.len()),
-      Message::Close(_) => {
-        println!("Received close message, closing connection.");
-        break;
-      }
-      _ => {}
-    }
-  }
 }
 
 /// 发送消息
 #[tauri::command]
 async fn send_message<'r>(msg: &str, socket: tauri::State<'r, SocketStoreage>) -> Result<bool, ()> {
-  let mut ws_stream = socket.stream.lock().await;
-  let (mut write, _) = ws_stream.as_mut().unwrap().split();
+  let mut ws_writer = socket.stream.lock().await;
+  let writer = ws_writer.as_mut().unwrap();
 
-  match write.send(Message::Text(msg.to_string())).await {
+  match writer.send(Message::Text(msg.to_string())).await {
     Ok(_) => Ok(true),
     Err(_) => Ok(false),
   }
