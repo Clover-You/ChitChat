@@ -11,6 +11,7 @@
 import React from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 import { MessageList } from '../MessageList'
+import { ChatEditor } from '../Editor/ChatEditor'
 
 export const ChatWindow = React.memo(function ChatWindow() {
   return (
@@ -39,10 +40,7 @@ export const ChatWindow = React.memo(function ChatWindow() {
           maxSize={65}
           minSize={25}>
           <div className="flex-shrink-0 h-full border-t-slate-300/10 border-t-[1px]">
-            <div
-              contentEditable
-              className="px-4 h-full w-full max-h-full overflow-auto cursor-auto outline-none"
-              spellCheck={false}></div>
+            <ChatEditor />
           </div>
         </Panel>
       </PanelGroup>

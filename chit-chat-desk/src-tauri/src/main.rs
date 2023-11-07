@@ -1,13 +1,13 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod request;
+
 use futures::SinkExt;
 use futures::StreamExt;
-use futures_util::future;
 use futures_util::stream::SplitSink;
+use request::httpclient::HttpClient;
 use std::sync::Arc;
-use tauri::window;
-use tokio::io::AsyncReadExt;
 use tokio::net::TcpStream;
 use tokio::sync::Mutex;
 use tokio_tungstenite::tungstenite::Message;
@@ -57,13 +57,13 @@ async fn connect_socket<'r>(
   let (ws_stream, _) = tokio_tungstenite::connect_async(url).await.unwrap();
   let (ws_write, rx) = ws_stream.split();
 
+  // 1 注册消息监听
   tokio::spawn(async move {
     rx.for_each(|msg| async {
       match msg.unwrap() {
         Message::Text(text) => {
           println!("server message ----->>> {}", text);
           let _ = window.emit("sys_message", text);
-          // window.lock().await.emit("event", "a");
         }
         _ => {}
       }
@@ -71,6 +71,7 @@ async fn connect_socket<'r>(
     .await;
   });
 
+  // 将 socket write stream 保存到 tauri manage
   *socket.stream.lock().await = Some(ws_write);
 
   Ok(())

@@ -11,7 +11,7 @@ import { MessageItem } from './MessageItem'
 
 export function MessageList() {
   let nodeList = []
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < 10; i++) {
     nodeList.push(
       <MessageItem
         key={i}

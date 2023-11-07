@@ -7,26 +7,28 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next export"
+    "export": "next export",
+    "test": "vitest"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.5.1",
     "dayjs": "^1.11.10",
-    "next": "13.5.6",
-    "react": "^18",
-    "react-dom": "^18",
+    "next": "14.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-resizable-panels": "^0.0.55"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.5.4",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "autoprefixer": "^10",
-    "eslint": "^8",
-    "eslint-config-next": "13.5.6",
-    "postcss": "^8",
-    "tailwindcss": "^3",
-    "typescript": "^5"
+    "@tauri-apps/cli": "^1.5.6",
+    "@types/node": "^20.8.10",
+    "@types/react": "^18.2.36",
+    "@types/react-dom": "^18.2.14",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.53.0",
+    "eslint-config-next": "14.0.1",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
   }
 }
