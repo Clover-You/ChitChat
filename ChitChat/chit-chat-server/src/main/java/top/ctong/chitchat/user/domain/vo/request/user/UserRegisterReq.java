@@ -1,12 +1,7 @@
-package top.ctong.chitchat.common.domain.entity;
+package top.ctong.chitchat.user.domain.vo.request.user;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Date;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -20,47 +15,22 @@ import java.util.Date;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * 用户表
+ * 用户注册请求参数
  * </p>
  *
+ * @param name     用户名
+ * @param password 登录密码
  * @author Clover
- * @date 2023-10-20 13:47
+ * @date 2023-11-10 15:58
  */
-@Data
-@TableName("sys_user")
-public class User implements Serializable {
+@Schema(description = "用户注册请求参数")
+public record UserRegisterReq(
+    @Schema(description = "用户名")
+    @NotBlank(message = "用户名不能为空")
+    String name,
+    @Schema(description = "登录密码")
+    @NotBlank(message = "登录密码不能为空")
+    String password
+) {
 
-    @Serial
-    private static final long serialVersionUID = 7716678547495664955L;
-
-    /**
-     * 用户 ID
-     */
-    @TableId
-    private Long id;
-
-    /**
-     * 账号
-     */
-    private String account;
-
-    /**
-     * 用户名
-     */
-    private String name;
-
-    /**
-     * 密码
-     */
-    private String password;
-
-    /**
-     * 头像
-     */
-    private String avatar;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
 }

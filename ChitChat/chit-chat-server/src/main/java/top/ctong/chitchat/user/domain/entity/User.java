@@ -1,9 +1,15 @@
-package top.ctong.chitchat.chat.controller;
+package top.ctong.chitchat.user.domain.entity;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import top.ctong.chitchatcore.utils.Result;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -17,19 +23,50 @@ import top.ctong.chitchatcore.utils.Result;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * 聊天前端控制器
+ * 用户表
  * </p>
  *
  * @author Clover
- * @date 2023-11-07 16:51
+ * @date 2023-10-20 13:47
  */
-@RestController
-@RequestMapping("/chat")
-public class ChatController {
+@Data
+@Builder
+@TableName("sys_user")
+@NoArgsConstructor
+@AllArgsConstructor
+public class User implements Serializable {
 
-    @PostMapping("/broadcast")
-    public Result<?> BroadcastMessage() {
-        return Result.ok();
-    }
+    @Serial
+    private static final long serialVersionUID = 7716678547495664955L;
 
+    /**
+     * 用户 ID
+     */
+    @TableId
+    private Long id;
+
+    /**
+     * 账号
+     */
+    private String account;
+
+    /**
+     * 用户名
+     */
+    private String name;
+
+    /**
+     * 密码
+     */
+    private String password;
+
+    /**
+     * 头像
+     */
+    private String avatar;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
 }

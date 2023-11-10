@@ -1,4 +1,4 @@
-package top.ctong.chitchat.user.server;
+package top.ctong.chitchat.user.service;
 
 import io.netty.channel.ChannelHandlerContext;
 

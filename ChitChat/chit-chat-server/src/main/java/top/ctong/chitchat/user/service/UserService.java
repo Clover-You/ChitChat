@@ -1,6 +1,7 @@
 package top.ctong.chitchat.user.service;
 
-import top.ctong.chitchat.common.domain.entity.User;
+import top.ctong.chitchat.user.domain.entity.User;
+import top.ctong.chitchat.user.domain.vo.request.user.UserRegisterReq;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -31,4 +32,14 @@ public interface UserService {
      * @date 2023/11/10 15:31
      */
     User findUserByAccount(String account);
+
+    /**
+     * 用户注册
+     *
+     * @param req 注册参数
+     * @return String
+     * @author Clover You
+     * @date 2023/11/10 16:09
+     */
+    String register(UserRegisterReq req);
 }

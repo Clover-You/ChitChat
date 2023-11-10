@@ -1,9 +1,9 @@
-package top.ctong.chitchat.user.server.impl;
+package top.ctong.chitchat.user.service.impl;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Service;
-import top.ctong.chitchat.user.server.WebSocketServer;
+import top.ctong.chitchat.user.service.WebSocketServer;
 
 import java.util.concurrent.ConcurrentHashMap;
 

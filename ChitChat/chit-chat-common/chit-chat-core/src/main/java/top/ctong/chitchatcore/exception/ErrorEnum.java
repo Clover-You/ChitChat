@@ -1,4 +1,4 @@
-package top.ctong.chitchatcore.expection;
+package top.ctong.chitchatcore.exception;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗

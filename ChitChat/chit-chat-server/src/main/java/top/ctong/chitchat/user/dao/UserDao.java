@@ -3,7 +3,7 @@ package top.ctong.chitchat.user.dao;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import top.ctong.chitchat.common.domain.entity.User;
+import top.ctong.chitchat.user.domain.entity.User;
 import top.ctong.chitchat.user.mapper.UserMapper;
 
 /**
@@ -39,5 +39,19 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
         var wrapper = new LambdaQueryWrapper<User>();
         wrapper.eq(User::getAccount, account.trim());
         return this.baseMapper.selectOne(wrapper);
+    }
+
+    /**
+     * 检查账号是否存在
+     *
+     * @param myAcc 账号信息
+     * @return boolean
+     * @author Clover You
+     * @date 2023/11/10 16:16
+     */
+    public boolean existAccount(String myAcc) {
+        var wrapper = new LambdaQueryWrapper<User>();
+        wrapper.eq(User::getAccount, myAcc.trim());
+        return this.baseMapper.exists(wrapper);
     }
 }

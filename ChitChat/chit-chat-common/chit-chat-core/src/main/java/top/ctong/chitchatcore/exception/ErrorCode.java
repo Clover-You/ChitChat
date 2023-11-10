@@ -22,8 +22,8 @@ public enum ErrorCode implements ErrorEnum {
     SUCCESS("200", "successful"),
 
     BAD_REQUEST("400", "bad request"),
-
-    ;
+    
+    UNKNOWN_SYS_ERROR("500", "unknown system error!");
 
     private final String code;
 

@@ -1,6 +1,6 @@
 package top.ctong.chitchat.user.service;
 
-import top.ctong.chitchat.common.domain.entity.User;
+import top.ctong.chitchat.user.domain.entity.User;
 import top.ctong.chitchat.common.domain.vo.request.auth.PasswordAuthLoginReq;
 
 /**
