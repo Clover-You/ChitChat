@@ -1,10 +1,10 @@
-package top.ctong.chitchat.common.domain.vo.request.auth;
+package top.ctong.chitchat.user.service.impl;
 
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import top.ctong.chitchat.common.domain.entity.User;
+import top.ctong.chitchat.user.dao.UserDao;
+import top.ctong.chitchat.user.service.UserService;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -18,22 +18,32 @@ import java.io.Serializable;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * 用户名密码登录
+ * 用户服务
  * </p>
  *
  * @author Clover
- * @date 2023-10-20 10:56
+ * @date 2023-11-10 15:32
  */
-@Data
-public class PasswordAuthLoginReq implements Serializable {
+@Service
+public class UserServiceImpl implements UserService {
 
-    @Serial
-    private static final long serialVersionUID = 7716678547495664955L;
+    private final UserDao userDao;
 
-    @NotEmpty(message = "用户名不能为空")
-    private String account;
+    @Autowired
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
-    @NotEmpty(message = "密码不能为空")
-    private String password;
-
+    /**
+     * 通过账号查找用户信息
+     *
+     * @param account 账号
+     * @return User
+     * @author Clover You
+     * @date 2023/11/10 15:31
+     */
+    @Override
+    public User findUserByAccount(String account) {
+        return userDao.getByAccount(account);
+    }
 }

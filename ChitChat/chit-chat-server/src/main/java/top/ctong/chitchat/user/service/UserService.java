@@ -1,10 +1,6 @@
-package top.ctong.chitchat.common.domain.vo.request.auth;
+package top.ctong.chitchat.user.service;
 
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
+import top.ctong.chitchat.common.domain.entity.User;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -18,22 +14,21 @@ import java.io.Serializable;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * 用户名密码登录
+ * 用户相关服务
  * </p>
  *
  * @author Clover
- * @date 2023-10-20 10:56
+ * @date 2023-11-10 14:53
  */
-@Data
-public class PasswordAuthLoginReq implements Serializable {
+public interface UserService {
 
-    @Serial
-    private static final long serialVersionUID = 7716678547495664955L;
-
-    @NotEmpty(message = "用户名不能为空")
-    private String account;
-
-    @NotEmpty(message = "密码不能为空")
-    private String password;
-
+    /**
+     * 通过账号查找用户信息
+     *
+     * @param account 账号
+     * @return User
+     * @author Clover You
+     * @date 2023/11/10 15:31
+     */
+    User findUserByAccount(String account);
 }

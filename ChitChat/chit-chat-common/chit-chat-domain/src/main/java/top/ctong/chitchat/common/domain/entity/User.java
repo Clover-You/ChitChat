@@ -40,9 +40,19 @@ public class User implements Serializable {
     private Long id;
 
     /**
+     * 账号
+     */
+    private String account;
+
+    /**
      * 用户名
      */
     private String name;
+
+    /**
+     * 密码
+     */
+    private String password;
 
     /**
      * 头像

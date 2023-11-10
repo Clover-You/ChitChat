@@ -1,6 +1,6 @@
-package top.ctong.chitchatcore.expection;
+package top.ctong.chitchatcore.utils;
 
-import top.ctong.chitchatcore.expection.ErrorEnum;
+import java.util.Objects;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -14,32 +14,25 @@ import top.ctong.chitchatcore.expection.ErrorEnum;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * WEB API 错误代码
+ * 字符串工具
  * </p>
  *
  * @author Clover
- * @date 2023-10-20 11:09
+ * @date 2023-11-10 15:17
  */
-public enum HttpError implements ErrorEnum {
-    SUCCESS("200", "successful")
-    ;
+public class StringUtils {
 
-    private final String code;
+    private StringUtils() {}
 
-    private final String message;
-
-    HttpError(String code, String message) {
-        this.code = code;
-        this.message = message;
+    public static String trim(String str) {
+        if (str == null) return null;
+        return str.trim();
     }
 
-    @Override
-    public String getErrorCode() {
-        return this.code;
+    public static boolean equals(String str1, String str2) {
+        var str1Trim = trim(str1);
+        var str2Trim = trim(str2);
+        return Objects.equals(str1Trim, str2Trim);
     }
 
-    @Override
-    public String getErrorMessage() {
-        return this.message;
-    }
 }

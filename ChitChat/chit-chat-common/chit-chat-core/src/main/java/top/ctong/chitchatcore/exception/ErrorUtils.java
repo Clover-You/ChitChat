@@ -1,10 +1,6 @@
-package top.ctong.chitchat.common.domain.vo.request.auth;
+package top.ctong.chitchatcore.exception;
 
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -18,22 +14,28 @@ import java.io.Serializable;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * 用户名密码登录
+ * 异常工具
  * </p>
  *
  * @author Clover
- * @date 2023-10-20 10:56
+ * @date 2023-11-10 14:54
  */
-@Data
-public class PasswordAuthLoginReq implements Serializable {
+public class ErrorUtils {
 
-    @Serial
-    private static final long serialVersionUID = 7716678547495664955L;
+    private ErrorUtils() {}
 
-    @NotEmpty(message = "用户名不能为空")
-    private String account;
+    public static void ifTrue(boolean isTrue, ErrorCode error) {
+        if (isTrue) return;
+        throw new BusinessException(error);
+    }
 
-    @NotEmpty(message = "密码不能为空")
-    private String password;
+    public static void ifTrue(boolean isTrue, BusinessException e) {
+        if (isTrue) return;
+        throw e;
+    }
 
+    public static void isEqual(Object obj1, Object obj2, BusinessException e) {
+        if (Objects.equals(obj1, obj2)) return;
+        throw e;
+    }
 }

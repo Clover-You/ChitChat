@@ -1,10 +1,8 @@
-package top.ctong.chitchat.common.domain.vo.request.auth;
+package top.ctong.chitchatcore.utils;
 
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-
-import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
+import java.util.function.Function;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -18,22 +16,32 @@ import java.io.Serializable;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * 用户名密码登录
+ * 列表工具
  * </p>
  *
  * @author Clover
- * @date 2023-10-20 10:56
+ * @date 2023-10-20 16:17
  */
-@Data
-public class PasswordAuthLoginReq implements Serializable {
+public class ListUtils {
 
-    @Serial
-    private static final long serialVersionUID = 7716678547495664955L;
+    private ListUtils() {}
 
-    @NotEmpty(message = "用户名不能为空")
-    private String account;
-
-    @NotEmpty(message = "密码不能为空")
-    private String password;
+    /**
+     * 在列表中返回一条满足结果的数据
+     *
+     * @param list 列表
+     * @param func 过滤器
+     * @return T
+     * @author Clover You
+     * @date 2023/10/20 16:21
+     */
+    public static <T> T findOne(List<T> list, Function<T, Boolean> func) {
+        for (T it : list) {
+            if (func.apply(it)) {
+                return it;
+            }
+        }
+        return null;
+    }
 
 }

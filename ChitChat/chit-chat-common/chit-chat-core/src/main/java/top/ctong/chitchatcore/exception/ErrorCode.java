@@ -1,10 +1,4 @@
-package top.ctong.chitchat.common.domain.vo.request.auth;
-
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
+package top.ctong.chitchatcore.exception;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -18,22 +12,35 @@ import java.io.Serializable;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * 用户名密码登录
+ * WEB API 错误代码
  * </p>
  *
  * @author Clover
- * @date 2023-10-20 10:56
+ * @date 2023-10-20 11:09
  */
-@Data
-public class PasswordAuthLoginReq implements Serializable {
+public enum ErrorCode implements ErrorEnum {
+    SUCCESS("200", "successful"),
 
-    @Serial
-    private static final long serialVersionUID = 7716678547495664955L;
+    BAD_REQUEST("400", "bad request"),
 
-    @NotEmpty(message = "用户名不能为空")
-    private String account;
+    ;
 
-    @NotEmpty(message = "密码不能为空")
-    private String password;
+    private final String code;
 
+    private final String message;
+
+    ErrorCode(String code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    @Override
+    public String getErrorCode() {
+        return this.code;
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return this.message;
+    }
 }

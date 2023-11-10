@@ -1,22 +1,16 @@
 package top.ctong.chitchat.websocket;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
-import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
-import io.netty.handler.stream.ChunkedWriteHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
@@ -44,61 +38,52 @@ import java.net.InetSocketAddress;
  * @date 2023-10-20 14:30
  */
 @Component
-public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListener<ContextClosedEvent>, ApplicationContextAware {
+@EnableConfigurationProperties(NettyProperty.class)
+public class NettyServer implements ApplicationRunner, ApplicationListener<ContextClosedEvent>, ApplicationContextAware {
 
-    private final Logger logger = LoggerFactory.getLogger(NettyBootstrapRunner.class);
+    private final Logger logger = LoggerFactory.getLogger(NettyServer.class);
+
+    /**
+     * worker 线程组，用于服务端接受客户端数据读写
+     */
+    private final NioEventLoopGroup workerGroup = new NioEventLoopGroup();
+
+    /**
+     * boss 线程组，用于服务端接受客户端连接
+     */
+    private final NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
+
+    private final NettyServerHandlerInitializer nettyServerHandlerInitializer;
+
+    private final NettyProperty property;
 
     private Channel serverChannel;
 
     private ApplicationContext applicationContext;
 
+    @Autowired
+    public NettyServer(NettyProperty property, NettyServerHandlerInitializer nettyServerHandlerInitializer) {
+        this.property = property;
+        this.nettyServerHandlerInitializer = nettyServerHandlerInitializer;
+    }
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        var bossGroup = new NioEventLoopGroup();
-        var workerGroup = new NioEventLoopGroup();
-
+        // 创建 Server Bootstrap 对象，用于启动 netty
         var serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workerGroup);
+        // 指定 channel 为服务端
         serverBootstrap.channel(NioServerSocketChannel.class);
-        serverBootstrap.localAddress(new InetSocketAddress("0.0.0.0", 1024));
+        // 设置 Netty Server 启动端口
+        serverBootstrap.localAddress(new InetSocketAddress("0.0.0.0", property.getPort()));
+        serverBootstrap.childHandler(nettyServerHandlerInitializer);
 
-        serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
+        var future = serverBootstrap.bind().sync();
 
-            @Override
-            protected void initChannel(SocketChannel socketChannel) throws Exception {
-                var pipeline = socketChannel.pipeline();
-                pipeline.addLast(new HttpServerCodec());
-                pipeline.addLast(new ChunkedWriteHandler());
-                pipeline.addLast(new HttpObjectAggregator(65536));
-                pipeline.addLast(new ChannelInboundHandlerAdapter() {
-                    @Override
-                    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-                        super.channelRead(ctx, msg);
-                    }
-                });
-
-                pipeline.addLast(new WebSocketServerCompressionHandler());
-                pipeline.addLast(new WebSocketServerProtocolHandler("/socket", null, true, 10240));
-
-                // 接收消息
-                pipeline.addLast(new SimpleChannelInboundHandler<WebSocketFrame>() {
-                    @Override
-                    protected void channelRead0(ChannelHandlerContext channelHandlerContext, WebSocketFrame webSocketFrame) throws Exception {
-                        if (webSocketFrame instanceof TextWebSocketFrame) { // 此处仅处理 Text Frame
-                            String request = ((TextWebSocketFrame) webSocketFrame).text();
-                            // 直接返回消息
-                            channelHandlerContext.channel().writeAndFlush(new TextWebSocketFrame("收到: " + request));
-                        }
-                    }
-                });
-
-            }
-        });
-
-        serverChannel = serverBootstrap.bind().sync().channel();
-        serverChannel.closeFuture().sync();
-
-        logger.info("websocker server start in 10086 port!");
+        if (future.isSuccess()) {
+            serverChannel = future.channel();
+            logger.info("WebSocket server start in {} port!", property.getPort());
+        }
     }
 
     /**
@@ -112,6 +97,10 @@ public class NettyBootstrapRunner implements ApplicationRunner, ApplicationListe
         if (this.serverChannel != null) {
             this.serverChannel.close();
         }
+        // 关闭线程组
+        bossGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
+
         logger.info("websocket stop!");
     }
 

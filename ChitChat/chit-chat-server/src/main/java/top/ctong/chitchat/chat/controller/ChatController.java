@@ -1,10 +1,9 @@
-package top.ctong.chitchat.common.domain.vo.request.auth;
+package top.ctong.chitchat.chat.controller;
 
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import top.ctong.chitchatcore.utils.Result;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -18,22 +17,19 @@ import java.io.Serializable;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * 用户名密码登录
+ * 聊天前端控制器
  * </p>
  *
  * @author Clover
- * @date 2023-10-20 10:56
+ * @date 2023-11-07 16:51
  */
-@Data
-public class PasswordAuthLoginReq implements Serializable {
+@RestController
+@RequestMapping("/chat")
+public class ChatController {
 
-    @Serial
-    private static final long serialVersionUID = 7716678547495664955L;
-
-    @NotEmpty(message = "用户名不能为空")
-    private String account;
-
-    @NotEmpty(message = "密码不能为空")
-    private String password;
+    @PostMapping("/broadcast")
+    public Result<?> BroadcastMessage() {
+        return Result.ok();
+    }
 
 }

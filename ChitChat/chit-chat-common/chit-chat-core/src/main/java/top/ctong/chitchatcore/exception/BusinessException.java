@@ -1,10 +1,4 @@
-package top.ctong.chitchat.common.domain.vo.request.auth;
-
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
+package top.ctong.chitchatcore.exception;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -18,22 +12,38 @@ import java.io.Serializable;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * 用户名密码登录
+ * 业务异常
  * </p>
  *
  * @author Clover
- * @date 2023-10-20 10:56
+ * @date 2023-11-10 14:58
  */
-@Data
-public class PasswordAuthLoginReq implements Serializable {
+public class BusinessException extends RuntimeException {
 
-    @Serial
-    private static final long serialVersionUID = 7716678547495664955L;
+    private final ErrorCode error;
 
-    @NotEmpty(message = "用户名不能为空")
-    private String account;
+    /**
+     * Constructs a new throwable with the specified detail message.  The
+     * cause is not initialized, and may subsequently be initialized by
+     * a call to {@link #initCause}.
+     *
+     * <p>The {@link #fillInStackTrace()} method is called to initialize
+     * the stack trace data in the newly created throwable.
+     *
+     * @param message the detail message. The detail message is saved for
+     *                later retrieval by the {@link #getMessage()} method.
+     */
+    public BusinessException(String message) {
+        this(ErrorCode.BAD_REQUEST, message);
+    }
 
-    @NotEmpty(message = "密码不能为空")
-    private String password;
+    public BusinessException(ErrorCode error, String message) {
+        super(message);
+        this.error = error;
+    }
 
+
+    public BusinessException(ErrorCode error) {
+        this(error, error.getErrorMessage());
+    }
 }

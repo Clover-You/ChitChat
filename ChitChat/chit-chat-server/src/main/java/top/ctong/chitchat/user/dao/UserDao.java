@@ -1,10 +1,10 @@
-package top.ctong.chitchat.common.domain.vo.request.auth;
+package top.ctong.chitchat.user.dao;
 
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
+import top.ctong.chitchat.common.domain.entity.User;
+import top.ctong.chitchat.user.mapper.UserMapper;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -18,22 +18,26 @@ import java.io.Serializable;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * 用户名密码登录
+ * 用户 数据库 操作
  * </p>
  *
  * @author Clover
- * @date 2023-10-20 10:56
+ * @date 2023-11-10 15:35
  */
-@Data
-public class PasswordAuthLoginReq implements Serializable {
+@Service
+public class UserDao extends ServiceImpl<UserMapper, User> {
 
-    @Serial
-    private static final long serialVersionUID = 7716678547495664955L;
-
-    @NotEmpty(message = "用户名不能为空")
-    private String account;
-
-    @NotEmpty(message = "密码不能为空")
-    private String password;
-
+    /**
+     * 通过账号查询用户信息
+     *
+     * @param account 账号
+     * @return User
+     * @author Clover You
+     * @date 2023/11/10 15:48
+     */
+    public User getByAccount(String account) {
+        var wrapper = new LambdaQueryWrapper<User>();
+        wrapper.eq(User::getAccount, account.trim());
+        return this.baseMapper.selectOne(wrapper);
+    }
 }

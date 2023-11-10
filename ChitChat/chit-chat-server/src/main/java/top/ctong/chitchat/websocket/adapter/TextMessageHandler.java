@@ -1,10 +1,9 @@
-package top.ctong.chitchat.common.domain.vo.request.auth;
+package top.ctong.chitchat.websocket.adapter;
 
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-
-import java.io.Serial;
-import java.io.Serializable;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import org.springframework.stereotype.Component;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -18,22 +17,37 @@ import java.io.Serializable;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * 用户名密码登录
+ * 文本消息适配器
  * </p>
  *
  * @author Clover
- * @date 2023-10-20 10:56
+ * @date 2023-10-20 16:24
  */
-@Data
-public class PasswordAuthLoginReq implements Serializable {
+@Component("websocketMessageAdapter")
+public class TextMessageHandler implements MessageAdapter {
 
-    @Serial
-    private static final long serialVersionUID = 7716678547495664955L;
+    /**
+     * 是否可以处理当前消息
+     *
+     * @param frame 消息类型
+     */
+    @Override
+    public boolean canRead(WebSocketFrame frame) {
+        return frame instanceof TextWebSocketFrame;
+    }
 
-    @NotEmpty(message = "用户名不能为空")
-    private String account;
-
-    @NotEmpty(message = "密码不能为空")
-    private String password;
+    /**
+     * 处理这个消息
+     *
+     * @param ctx   channel 上下文
+     * @param frame 消息内容
+     */
+    @Override
+    public void invoke(ChannelHandlerContext ctx, WebSocketFrame frame) {
+        if (frame instanceof TextWebSocketFrame) {
+            var request = ((TextWebSocketFrame) frame).text();
+            ctx.channel().writeAndFlush(new TextWebSocketFrame("收到： " + request));
+        }
+    }
 
 }

@@ -1,12 +1,6 @@
-package top.ctong.chitchat.auth;
+package top.ctong.chitchat.user.server;
 
-import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import top.ctong.chitchat.common.domain.vo.request.auth.PasswordAuthLoginReq;
-import top.ctong.chitchatcore.utils.Result;
+import io.netty.channel.ChannelHandlerContext;
 
 /**
  * █████▒█      ██  ▄████▄   ██ ▄█▀     ██████╗ ██╗   ██╗ ██████╗
@@ -20,27 +14,26 @@ import top.ctong.chitchatcore.utils.Result;
  * ░     ░ ░      ░  ░
  * Copyright 2023 Clover You.
  * <p>
- * 账号密码登录 前端控制器
+ * netty websocket server
  * </p>
  *
  * @author Clover
- * @date 2023-10-20 10:59
+ * @date 2023-11-10 13:55
  */
-@RestController
-@RequestMapping("/auth/pass")
-public class PasswordLoginController {
+public interface WebSocketServer {
 
     /**
-     * 账号密码登录
+     * 记录用户上线
      *
-     * @param request 请求参数
-     * @return Result<?>
-     * @author Clover You
-     * @date 2023/10/20 11:22
+     * @param proof 用户登录凭证
+     * @param ctx   socket channel
      */
-    @PostMapping("/login")
-    public Result<?> login(@RequestBody @Valid PasswordAuthLoginReq request) {
-        return Result.ok();
-    }
+    void online(Integer proof, ChannelHandlerContext ctx);
 
+    /**
+     * 用户离线
+     *
+     * @param uid 用户 ID
+     */
+    void offline(Integer uid);
 }
